@@ -1,16 +1,39 @@
 #!/bin/sh
 
 print_help () {
-    echo TODO
+    cat <<EOF
+Usage: $0 [options] [< file-to copy]
+
+Copy content to or paste from a linux / bsd system clipboard.
+
+X11 sessions require xclip (or xsel), while wayland sessions require wl-copy
+and wl-paste. For tty / unrecognized sessions, copy functionality is provided
+via an osc52 code for supporting terminals; paste is not supported over tty.
+
+By default, will copy stdin to the clipboard if it's detected as a pipe,
+otherwise the clipboard is printed to stdout.
+
+The --primary and --clipboard options can be combined to copy to (or from)
+both selections.
+
+options:
+  -h, --help        print usage information and exit
+  -i, --in          copy to selected clipbord(s) from stdin
+  -o, --out         write selected clipboard(s) to stdout
+  -p, --primary     copy to / write from the primary selection
+  -c, --clipboard   copy to / write from the clipboard selection
+
+Note: long options are only supported in the case of GNU's enhanced getopt
+EOF
 }
 
 getopt -T >/dev/null
 if [ $? -eq 4 ]; then
-  # GNU enhanced getopt is available
-  ARGS=$(getopt --name "$PROG" --long help,in,out,primary,clipboard --options hiopc -- "$@")
+    # GNU enhanced getopt is available
+    ARGS=$(getopt --name "$PROG" --long help,in,out,primary,clipboard --options hiopc -- "$@")
 else
-  # Original getopt is available (no long option names, no whitespace, no sorting)
-  ARGS=$(getopt hiopc "$@")
+    # Original getopt is available (no long option names, no whitespace, no sorting)
+    ARGS=$(getopt hiopc "$@")
 fi
 eval set -- $ARGS
 
@@ -50,6 +73,11 @@ while [ $# -gt 0 ]; do
     esac
     shift
 done
+
+if [ $# -gt 0 ]; then
+    printf "Unexpected argument $1" >&2
+    exit 1
+fi
 
 if ! $read_from_stdin && ! $write_to_stdout; then
     read_from_stdin=$default_read_from_stdin
