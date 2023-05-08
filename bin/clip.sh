@@ -175,3 +175,5 @@ fi
 if $write_to_stdout; then
     paste
 fi
+
+exit 0
