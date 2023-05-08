@@ -1,0 +1,7 @@
+#compdef clip
+_arguments -s -S \
+    + '(help)' {-h,--help}'[print usage info]' \
+    + '(operation)' {-i,--in}'[copy from stdin]' \
+    + '(out)' {-o,--out}'[write to stdout]' \
+    + '(primary)' {-p,--primary}'[use primary selection]' \
+    + '(clipboard)' {-c,--clipboard}'[use clipboard selection]'
