@@ -35,7 +35,7 @@ else
     # Original getopt is available (no long option names, no whitespace, no sorting)
     ARGS=$(getopt hiopc "$@")
 fi
-eval set -- $ARGS
+eval set -- "$ARGS"
 
 default_read_from_stdin=true
 default_write_to_stdout=false
@@ -75,7 +75,7 @@ while [ $# -gt 0 ]; do
 done
 
 if [ $# -gt 0 ]; then
-    printf "Unexpected argument $1" >&2
+    printf "Unexpected argument %s" "$1" >&2
     exit 1
 fi
 
