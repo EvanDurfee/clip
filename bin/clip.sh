@@ -91,8 +91,8 @@ fi
 paste () {
     # Currently linux and BSD only; no darwin, wsl, etc.
     if [ "$XDG_SESSION_TYPE" = "wayland" ]; then
-        if $use_primary; then wl-paste --primary --no-newline; fi
-        if $use_clipboard; then wl-paste --no-newline; fi
+        if $use_primary; then wl-paste --primary --no-newline --type text; fi
+        if $use_clipboard; then wl-paste --no-newline --type text; fi
     elif [ "$XDG_SESSION_TYPE" = "x11" ]; then
         if hash xsel 2>/dev/null; then
             if $use_primary; then xsel --output --primary; fi
